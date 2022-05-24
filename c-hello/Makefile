@@ -10,10 +10,10 @@ main.o:
 	riscv64-unknown-elf-gcc -O0 -march=rv32if -mabi=ilp32f -c main.c
 
 c-hello.elf: startup.o main.o
-	riscv64-unknown-elf-ld -m elf32lriscv -b elf32-littleriscv --no-relax -Tqemu-virtio.ld startup.o main.o -o c-hello.elf
+	riscv64-unknown-elf-ld -m elf32lriscv -b elf32-littleriscv -Tqemu-virtio.ld startup.o main.o -o c-hello.elf
 
 run: c-hello.elf
-	qemu-system-riscv32 -M virt -monitor stdio -bios c-hello.elf
+	qemu-system-riscv32 -M virt -monitor stdio -bios none -device loader,file=c-hello.elf -bios none
 
 dump:
 	riscv64-unknown-elf-objdump -S c-hello.elf

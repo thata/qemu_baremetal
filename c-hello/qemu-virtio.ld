@@ -24,6 +24,7 @@ SECTIONS
   .bss : {
     . = ALIGN(16);
     *(.bss)
+    *(.sbss)
   } >ram
 
   .stack : {
