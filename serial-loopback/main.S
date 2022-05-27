@@ -3,6 +3,8 @@
 #define LSR 5                 // line status register
 #define LSR_RX_READY (1<<0)   // input is waiting to be read from RHR
 #define LSR_TX_IDLE (1<<5)    // THR can accept another character to send
+#define CR 0x0d
+#define LF 0x0a
 
   .text
   .globl main
@@ -21,6 +23,15 @@ loop:
 putc:
   // データ送信レジスタ(THR)へ書き込んだ値がシリアルへ出力される
   li a5, 0x10000000
+  li t0, CR
+  beq a0, t0, put_cr_lf
+  sb a0, THR(a5)
+  ret
+put_cr_lf:
+  // CRだけではいい感じに改行してくれないため、CRと一緒にLFも送信する
+  li a0, CR
+  sb a0, THR(a5)
+  li a0, LF
   sb a0, THR(a5)
   ret
 
